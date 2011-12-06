@@ -152,7 +152,7 @@ def ImportISO639(sLine, dictObjects):
     
     ##################################
     # Populating FluidInfo object
-    # corresponding to ISO639-2 code
+    # corresponding to ISO639-2/B code
     
     assert(llFields[0] is not None)
     assert(len(llFields[0]) == 1)
@@ -178,12 +178,8 @@ def ImportISO639(sLine, dictObjects):
     AddTag(dictObjects[sAbout2], sUserNS+'/lang/iso639/2', None)
     AddTag(dictObjects[sAbout2], sUserNS+'/lang/iso639/2B', None)
     
-    # This is *also* a valid ISO639-2/T code, if the second field is empty!
-    if llFields[1] is None:
-        AddTag(dictObjects[sAbout2], sUserNS+'/lang/iso639/2T', None)
-        
     lAllGlossonyms = []
-        
+    
     # English glossonym
     if llFields[3] is not None:
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/eng', llFields[3][0])
@@ -204,6 +200,45 @@ def ImportISO639(sLine, dictObjects):
     # Add if not empty
     if len(lAllGlossonyms):
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/_all', lAllGlossonyms)
+        
+    #############################################################
+    # Handle ISO639-2/T code, if it differs from ISO639-2/B code!
+    if llFields[1] is None:
+        # ISO639-2/T code is the same as the ISO639-2/B code!
+        AddTag(dictObjects[sAbout2], sUserNS+'/lang/iso639/2T', None)
+    else:
+        #####################################
+        ## This is one of the few ISO639-2/T codes
+        ## that isn't equal to the ISO639-2/B code
+        ## Create also a FluidInfo object for those!!!
+        assert(len(llFields[1]) == 1)
+   
+        sAbout2T = llFields[1][0]
+            
+        if len(sAbout2T) != 3:
+            print "Skipping malformed record:", llFields
+            return
+            
+        assert(sAbout2T.islower())
+        assert(sAbout2T.isalpha())
+        
+        print "Importing:", sAbout2T
+        dictObjects[sAbout2T] = dict()
+        
+        AddTag(dictObjects[sAbout2T], sUserNS+'/lang/iso639/2', None)
+        AddTag(dictObjects[sAbout2T], sUserNS+'/lang/iso639/2T', None)
+        # English glossonym
+        if llFields[3] is not None:
+            AddTag(dictObjects[sAbout2T], sUserNS+'/lang/glossonym/eng', llFields[3][0])
+            AddTag(dictObjects[sAbout2T], sUserNS+'/lang/glossonym/eng-all', llFields[3])
+            
+        # French glossonym
+        if llFields[4] is not None:
+            AddTag(dictObjects[sAbout2T], sUserNS+'/lang/glossonym/fra', llFields[4][0])
+            AddTag(dictObjects[sAbout2T], sUserNS+'/lang/glossonym/fra-all', llFields[4])
+            
+        if len(lAllGlossonyms):
+            AddTag(dictObjects[sAbout2T], sUserNS+'/lang/glossonym/_all', lAllGlossonyms)
         
     
     if llFields[2] is not None:
