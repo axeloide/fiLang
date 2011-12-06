@@ -100,6 +100,39 @@ FluidInfo objects of (duck)type "ISO 639 code":
 This is kind of the core tool, since other scripts will later iterate over
 those FluidInfo objects to perform other tasks.
 
+Example queries
+---------------
+Here some examples of FluidInfo queries:
+
+    * Look up by ISO 639-1 code:
+        fluiddb/about="es" AND HAS axeloide/lang/iso639/1
+
+    * Look up by ISO 639-2/B code:
+        fluiddb/about="fre" AND HAS axeloide/lang/iso639/2B
+
+    * Look up by ISO 639-2/T code:
+        fluiddb/about="fra" AND HAS axeloide/lang/iso639/2T
+        
+    * Look up by ISO 639-2 code, regardless if it's a T or B code:
+        fluiddb/about="fre" AND HAS axeloide/lang/iso639/2
+        
+    * Look up by english glossonym (preferential one):
+        fluiddb/about="es" AND axeloide/lang/glossonym/eng="Spanish"
+        
+    * Look up by english glossonym (any):
+        fluiddb/about="es" AND axeloide/lang/glossonym/eng-all contains "Castilian"
+        
+    * Look up by any glossonym in any language:
+        fluiddb/about="es" AND axeloide/lang/glossonym/_all contains "espagnol"
+        
+    * List all ISO 639-2/T codes that differ from the ISO 639-2/B codes :
+        HAS axeloide/lang/iso639/2T EXCEPT HAS axeloide/lang/iso639/2B
+
+    * List all ISO 639-2/B codes that differ from the ISO 639-2/T codes :
+        HAS axeloide/lang/iso639/2B EXCEPT HAS axeloide/lang/iso639/2T
+
+    * List all ISO 639-2/B codes that are the same as the ISO 639-2/T codes :
+        HAS axeloide/lang/iso639/2T AND HAS axeloide/lang/iso639/2B
 
 
 
