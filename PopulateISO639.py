@@ -38,10 +38,15 @@ FluidInfo objects of (duck)type "ISO 639 code":
         Contains the equivalent ISO 639-1 code.
         Not tagged if the object is a ISO 639-1 code itself.
 
-    ./lang/iso639/related-2
+    ./lang/iso639/related-2B
         string, 3-letters
-        Contains the equivalent ISO 639-2 code.
-        Not tagged if the object is a ISO 639-2 or ISO 639-3 code itself.
+        Contains the equivalent ISO 639-2/B code.
+        Not tagged if the object is a ISO 639-2/B code itself.
+        
+    ./lang/iso639/related-2T
+        string, 3-letters
+        Contains the equivalent ISO 639-2/T code.
+        Not tagged if the object is a ISO 639-2/T code itself.
         
     ./lang/glossonym/<xxx>
         string, possibly containing some of the wildest unicode characters around.
@@ -227,6 +232,10 @@ def ImportISO639(sLine, dictObjects):
         
         AddTag(dictObjects[sAbout2T], sUserNS+'/lang/iso639/2', None)
         AddTag(dictObjects[sAbout2T], sUserNS+'/lang/iso639/2T', None)
+        
+        # Linking ISO639-2/T to ISO639-2/B code
+        AddTag(dictObjects[sAbout2T], sUserNS+'/lang/iso639/related-2B', sAbout2)
+        
         # English glossonym
         if llFields[3] is not None:
             AddTag(dictObjects[sAbout2T], sUserNS+'/lang/glossonym/eng', llFields[3][0])
@@ -253,11 +262,24 @@ def ImportISO639(sLine, dictObjects):
         
         dictObjects[sAbout1] = dict()
         AddTag(dictObjects[sAbout1], sUserNS+'/lang/iso639/1', None)
-        # Linking ISO639-1 to ISO639-2 code
-        AddTag(dictObjects[sAbout1], sUserNS+'/lang/iso639/related-2', sAbout2)
         
-        # Linking ISO639-2 to ISO639-1 code
+        # Linking ISO639-1 to ISO639-2/B code
+        AddTag(dictObjects[sAbout1], sUserNS+'/lang/iso639/related-2B', sAbout2)
+        
+        # Linking ISO639-1 to ISO639-2/T code
+        if 'sAbout2T' in locals():
+            AddTag(dictObjects[sAbout1], sUserNS+'/lang/iso639/related-2T', sAbout2T)
+        else:
+            # T-code is same as B-code!
+            AddTag(dictObjects[sAbout1], sUserNS+'/lang/iso639/related-2T', sAbout2)
+            
+        
+        # Linking ISO639-2B to ISO639-1 code
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/iso639/related-1', sAbout1)
+        
+        # Linking ISO639-2T to ISO639-1 code
+        if 'sAbout2T' in locals():
+            AddTag(dictObjects[sAbout2T], sUserNS+'/lang/iso639/related-1', sAbout1)
         
         # English glossonym
         if llFields[3] is not None:
@@ -306,13 +328,13 @@ if __name__ == "__main__":
     
     fRequest = urllib2.urlopen(urlISOcodeListing)
 
-    # Get enconding of listing.
+    # Get enconding of raw listing.
     # This should usually be UTF-8, but it could change and cause a big headache!
     # sEncoding = fRequest.headers['content-type'].split('charset=')[-1]
     # ^^^^This is not working, since http://loc.org is not specifying the encoding. Dammit!
     #      fRequest.headers['content-type'] = 'text/plain'
     #        instead of:
-    #      fRequest.headers['content-type'] = 'text/html; charset=windows-1251'
+    #      fRequest.headers['content-type'] = 'text/html; charset=utf-8'
     # So we hardcode it:
     sEncoding = "utf-8"
     
@@ -345,6 +367,11 @@ if __name__ == "__main__":
     Tag(sUserNS+u'/lang/iso639/2')._set_description( u'Flags valid ISO639-2 language codes. Empty-valued.')
     Tag(sUserNS+u'/lang/iso639/2B')._set_description( u'Flags valid ISO639-2/B language codes. Empty-valued.')
     Tag(sUserNS+u'/lang/iso639/2T')._set_description( u'Flags valid ISO639-2/T language codes. Empty-valued.')
+    
+    Tag(sUserNS+u'/lang/iso639/related-1')._set_description( u'Link to corresponding ISO 639-1 code.')
+    Tag(sUserNS+u'/lang/iso639/related-2B')._set_description( u'Link to corresponding ISO 639-2/B code.')
+    Tag(sUserNS+u'/lang/iso639/related-2T')._set_description( u'Link to corresponding ISO 639-2/T code.')
+
     
     for sTagPath in Namespace(sUserNS+u'/lang/glossonym').tag_paths:
         sCode = sTagPath.split(u'/')[-1]

@@ -50,10 +50,15 @@ FluidInfo objects of (duck)type "ISO 639 code":
         Contains the equivalent ISO 639-1 code.
         Not tagged if the object is a ISO 639-1 code itself.
 
-    ./lang/iso639/related-2
+    ./lang/iso639/related-2B
         string, 3-letters
-        Contains the equivalent ISO 639-2 code.
-        Not tagged if the object is a ISO 639-2 or ISO 639-3 code itself.
+        Contains the equivalent ISO 639-2/B code.
+        Not tagged if the object is a ISO 639-2/B code itself.
+        
+    ./lang/iso639/related-2T
+        string, 3-letters
+        Contains the equivalent ISO 639-2/T code.
+        Not tagged if the object is a ISO 639-2/T code itself.
         
     ./lang/glossonym/<xxx>
         string, possibly containing some of the wildest unicode characters around.
@@ -76,6 +81,20 @@ FluidInfo objects of (duck)type "ISO 639 code":
         This program will only populate this for 
             xxx=eng=english
             xxx=fra=français
+
+    ./lang/glossonym/_all
+        set of strings, possibly containing some of the wildest unicode characters around.
+        Contains all of the names of the language in all languages.
+        NOTE: TagName is prefixed with underscore to avoid clash with any potential "all" language code!!
+        All names converted to lowercase, to avoid ambiguity, since we want to use this as
+        a way to lookup: [glossonym in any language] ---> [language-code]
+        Example:
+            fluiddb/about = "es"
+            ./lang/glossonym/_all = ["spanish" , "castilian", "espagnol", "castillan", "spanisch", "castellà", ...]
+        This program will only populate this for 
+            xxx=eng=english
+            xxx=fra=français
+        Other glossonyms to be populated by other programs, e.g. via Wikipedia API
 
 
 This is kind of the core tool, since other scripts will later iterate over
