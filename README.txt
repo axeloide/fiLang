@@ -198,3 +198,12 @@ Other registration-authorities or listings:
     
     http://www.iana.org/assignments/language-subtag-registry
     
+    http://www.ethnologue.com/codes/LanguageCodes.tab
+    http://www.ethnologue.com/codes/LanguageIndex.tab
+    http://www.ethnologue.com/codes/CountryCodes.tab
+    
+    http://www.ethnologue.com/show_language.asp?code=cat
+    
+Interesting and very concise essay about glossonyms:    
+    http://www.ce.berkeley.edu/~coby/essays/gloss.htm
+    
