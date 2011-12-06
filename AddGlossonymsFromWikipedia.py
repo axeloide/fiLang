@@ -131,7 +131,8 @@ if __name__ == "__main__":
         else:
             sBcode = dQueryMatch.values()[0].values()[0].values()[0].values()[0]
             sTcode = dQueryMatch.values()[0].values()[0].values()[1].values()[0]
-            print "InterwikiMap prefix: ", sIwmPrefix, "---> ISO639-2 B/T =", sBcode, sTcode
+            sWikiHome = dIWM['url'].rstrip(u'$1')
+            print "InterwikiMap prefix: ", sIwmPrefix, "---> ISO639-2 B/T =", sBcode, sTcode, "  WikiHome: ", sWikiHome
             lsAutoglossonyms = dIWM['language']
             ##
             if sIwmPrefix not in dictObjects.keys():
@@ -144,6 +145,7 @@ if __name__ == "__main__":
             AddTag(dictObjects[sIwmPrefix], sUserNS+u'/lang/glossonym/'+sBcode+u'-all', lsAutoglossonyms)
             AddTag(dictObjects[sIwmPrefix], sUserNS+u'/lang/glossonym/'+sTcode+u'-all', lsAutoglossonyms)
             AddTag(dictObjects[sIwmPrefix], sUserNS+u'/lang/glossonym/autoglossonym-all', lsAutoglossonyms)
+            AddTag(dictObjects[sIwmPrefix], sUserNS+u'/lang/wikipedia-home', sWikiHome)
             ##
             if sBcode not in dictObjects.keys():
                 dictObjects[sBcode] = dict()
@@ -155,6 +157,7 @@ if __name__ == "__main__":
             AddTag(dictObjects[sBcode], sUserNS+u'/lang/glossonym/'+sBcode+u'-all', lsAutoglossonyms)
             AddTag(dictObjects[sBcode], sUserNS+u'/lang/glossonym/'+sTcode+u'-all', lsAutoglossonyms)
             AddTag(dictObjects[sBcode], sUserNS+u'/lang/glossonym/autoglossonym-all', lsAutoglossonyms)
+            AddTag(dictObjects[sBcode], sUserNS+u'/lang/wikipedia-home', sWikiHome)
             ##
             if sTcode not in dictObjects.keys():
                 dictObjects[sTcode] = dict()
@@ -166,6 +169,7 @@ if __name__ == "__main__":
             AddTag(dictObjects[sTcode], sUserNS+u'/lang/glossonym/'+sBcode+u'-all', lsAutoglossonyms)
             AddTag(dictObjects[sTcode], sUserNS+u'/lang/glossonym/'+sTcode+u'-all', lsAutoglossonyms)
             AddTag(dictObjects[sTcode], sUserNS+u'/lang/glossonym/autoglossonym-all', lsAutoglossonyms)
+            AddTag(dictObjects[sTcode], sUserNS+u'/lang/wikipedia-home', sWikiHome)
             
 
     import pprint
@@ -174,10 +178,6 @@ if __name__ == "__main__":
     print "############### Going to tag:", len(dictObjects), "objects###############"
     
     CommitTagging(dictObjects)
-    
-    
-    
-    exit()
     
         
     # Put some usefull info on the description-tag of the tag objects.
@@ -190,7 +190,7 @@ if __name__ == "__main__":
     Tag(sUserNS+u'/lang/iso639/related-2T')._set_description( u'Link to corresponding ISO 639-2/T code.')
 
     
-    for sTagPath in Namespace(sUserNS+u'/lang/glossonym').tag_paths:
-        sCode = sTagPath.split(u'/')[-1]
-        Tag(sTagPath)._set_description( u'A language as named in '+sCode)
+    #for sTagPath in Namespace(sUserNS+u'/lang/glossonym').tag_paths:
+    #    sCode = sTagPath.split(u'/')[-1]
+    #    Tag(sTagPath)._set_description( u'A language as named in '+sCode)
 
