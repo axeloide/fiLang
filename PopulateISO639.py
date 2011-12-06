@@ -101,9 +101,11 @@ def ImportISO639(sLine, dictObjects):
     llFields = [sField.split(u';') for sField in sLine.split(u'|')]
     
     # Replace Fields which are a list with a single empty string item with None value
+    # Also strip whitespace, since semicolon delimiter is often followed by a space.
     # Doing this in ugly C style, since I don't know how to do that the Python way.
     llTmp = []
     for Field in llFields:
+        Field = [SubField.strip() for SubField in Field]    # strips whitespace from subfield items
         if len(Field)==1 and Field[0]=='':
             llTmp.append(None)
         else:
