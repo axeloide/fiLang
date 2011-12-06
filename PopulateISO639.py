@@ -236,6 +236,9 @@ def ImportISO639(sLine, dictObjects):
         # Linking ISO639-2/T to ISO639-2/B code
         AddTag(dictObjects[sAbout2T], sUserNS+'/lang/iso639/related-2B', sAbout2)
         
+        # Linking ISO639-2/B to ISO639-2/T code
+        AddTag(dictObjects[sAbout2], sUserNS+'/lang/iso639/related-2B', sAbout2T)
+        
         # English glossonym
         if llFields[3] is not None:
             AddTag(dictObjects[sAbout2T], sUserNS+'/lang/glossonym/eng', llFields[3][0])
