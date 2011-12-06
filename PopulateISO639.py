@@ -137,7 +137,9 @@ def ImportISO639(sLine, dictObjects):
     
     sAbout2 = llFields[0][0]
     
-    # Workaround to bloody http://loc.org prepending weird non-printing chars
+    # Stip any occurence of the unicode Byte Order Mark
+    #   The http://loc.gov reply contains one of those as first character.
+    #   See: http://en.wikipedia.org/wiki/Byte_Order_Mark
     sAbout2 = sAbout2.strip(u'\ufeff')
     
     if len(sAbout2) != 3:
