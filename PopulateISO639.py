@@ -97,7 +97,7 @@ def ImportISO639(sLine, dictObjects):
     sLine = sLine.strip()
     
     # Delimiter for fields is |
-    # Delimiter for lists in a field is ;
+    # Delimiter for subfields is ;
     llFields = [sField.split(u';') for sField in sLine.split(u'|')]
     
     # Replace Fields which are a list with a single empty string item with None value
@@ -114,14 +114,27 @@ def ImportISO639(sLine, dictObjects):
     llFields = llTmp
     
     ###############################
-    # First field: ISO639-2/B code.
-    # If the second field is empty, then this is also a ISO639-2/T code.
+    # 1st field: ISO639-2/B code.
+    #              If the second field is empty, then this is also a ISO639-2/T code.
+    #
+    # 2nd field: ISO639-2/T code or None if T code is equal to B code.
+    #
+    # 3rd field: ISO639-1 code or None if there's no equivalent.
+    #
+    # 4th field: English glossonym
+    #
+    # 5th field: French glossonym
+    
+    
+    
+    ##################################
+    # Populating FluidInfo object
+    # corresponding to ISO639-2 code
     
     assert(llFields[0] is not None)
     assert(len(llFields[0]) == 1)
     
-    #################################################
-    # FluidInfo object corresponding to ISO639-2 code
+    
     sAbout2 = llFields[0][0]
     
     # Workaround to bloody http://loc.org prepending weird non-printing chars
@@ -160,8 +173,9 @@ def ImportISO639(sLine, dictObjects):
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/fra-all', llFields[4])
     
     if llFields[2] is not None:
-        #################################################
-        # FluidInfo object corresponding to ISO639-1 code
+        ##################################
+        # Populating FluidInfo object
+        # corresponding to ISO639-1 code
         assert(len(llFields[0]) == 1)
         
         sAbout1 = llFields[2][0]
