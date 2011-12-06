@@ -96,6 +96,12 @@ def ImportISO639(sLine, dictObjects):
     # Get rid of end of line character.
     sLine = sLine.strip()
     
+    # Stip any occurence of the unicode Byte Order Mark
+    #   The http://loc.gov reply contains one of those as first character.
+    #   See: http://en.wikipedia.org/wiki/Byte_Order_Mark
+    sLine = sLine.strip(u'\ufeff')
+
+    
     # Delimiter for fields is |
     # Delimiter for subfields is ;
     llFields = [sField.split(u';') for sField in sLine.split(u'|')]
@@ -136,12 +142,7 @@ def ImportISO639(sLine, dictObjects):
     
     
     sAbout2 = llFields[0][0]
-    
-    # Stip any occurence of the unicode Byte Order Mark
-    #   The http://loc.gov reply contains one of those as first character.
-    #   See: http://en.wikipedia.org/wiki/Byte_Order_Mark
-    sAbout2 = sAbout2.strip(u'\ufeff')
-    
+        
     if len(sAbout2) != 3:
         print "Skipping malformed record:", llFields
         return
