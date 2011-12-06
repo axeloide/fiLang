@@ -176,13 +176,13 @@ def ImportISO639(sLine, dictObjects):
         
         # English glossonym
         if llFields[3] is not None:
-            AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/eng', llFields[3][0])
-            AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/eng-all', llFields[3])
+            AddTag(dictObjects[sAbout1], sUserNS+'/lang/glossonym/eng', llFields[3][0])
+            AddTag(dictObjects[sAbout1], sUserNS+'/lang/glossonym/eng-all', llFields[3])
             
         # French glossonym
         if llFields[4] is not None:
-            AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/fra', llFields[4][0])
-            AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/fra-all', llFields[4])
+            AddTag(dictObjects[sAbout1], sUserNS+'/lang/glossonym/fra', llFields[4][0])
+            AddTag(dictObjects[sAbout1], sUserNS+'/lang/glossonym/fra-all', llFields[4])
             
         
 def CommitTagging(dictObjects):

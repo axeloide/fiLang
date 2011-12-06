@@ -23,7 +23,7 @@ FluidInfo objects of (duck)type "ISO 639 code":
 
     fluiddb/about
         string, 2 or 3 letters
-        Plain ISO 639 code in lower case.
+        Plain ISO 639-1 or ISO 639-2 code in lower case.
 
     ./lang/iso639/1 
         empty-valued
@@ -91,7 +91,7 @@ ToDo
   A HowTo on error checking urllib2 calls:
     + http://docs.python.org/howto/urllib2.html
   
-* Include a timestamp tag like "./taxonomy/ncbi/timestamp-lastupdate"
+* Include a timestamp tag like "./lang/iso639/timestamp-lastupdate"
 
 
 Ideas for future tools
