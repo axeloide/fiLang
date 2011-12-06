@@ -60,10 +60,27 @@ FluidInfo objects of (duck)type "ISO 639 code":
         Example:
             fluiddb/about = "es"
             ./lang/glossonym/eng-all = ["Spanish" , "Castilian"]
-            
         This program will only populate this for 
             xxx=eng=english
             xxx=fra=français
+        Other glossonyms to be populated by other programs, e.g. via Wikipedia API
+        
+    ./lang/glossonym/_all
+        set of strings, possibly containing some of the wildest unicode characters around.
+        Contains all of the names of the language in all languages.
+        NOTE: TagName is prefixed with underscore to avoid clash with any potential "all" language code!!
+        All names converted to lowercase, to avoid ambiguity, since we want to use this as
+        a way to lookup: [glossonym in any language] ---> [language-code]
+        Example:
+            fluiddb/about = "es"
+            ./lang/glossonym/_all = ["spanish" , "castilian", "espagnol", "castillan", "spanisch", "castellà", ...]
+        This program will only populate this for 
+            xxx=eng=english
+            xxx=fra=français
+        Other glossonyms to be populated by other programs, e.g. via Wikipedia API
+    
+        
+        
 
 
 This is kind of the core tool, since other scripts will later iterate over
@@ -165,15 +182,29 @@ def ImportISO639(sLine, dictObjects):
     if llFields[1] is None:
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/iso639/2T', None)
         
+    lAllGlossonyms = []
+        
     # English glossonym
     if llFields[3] is not None:
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/eng', llFields[3][0])
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/eng-all', llFields[3])
+        lAllGlossonyms.extend(llFields[3])
         
     # French glossonym
     if llFields[4] is not None:
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/fra', llFields[4][0])
         AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/fra-all', llFields[4])
+        lAllGlossonyms.extend(llFields[4])
+        
+    ####################
+    # All-glossonym-list
+    #
+    # Convert to lower case.
+    lAllGlossonyms = [sGlossonym.lower() for sGlossonym in lAllGlossonyms]
+    # Add if not empty
+    if len(lAllGlossonyms):
+        AddTag(dictObjects[sAbout2], sUserNS+'/lang/glossonym/_all', lAllGlossonyms)
+        
     
     if llFields[2] is not None:
         ##################################
@@ -203,6 +234,12 @@ def ImportISO639(sLine, dictObjects):
             AddTag(dictObjects[sAbout1], sUserNS+'/lang/glossonym/fra', llFields[4][0])
             AddTag(dictObjects[sAbout1], sUserNS+'/lang/glossonym/fra-all', llFields[4])
             
+        ####################
+        # All-glossonym-list
+        # Add if not empty
+        if len(lAllGlossonyms):
+            AddTag(dictObjects[sAbout1], sUserNS+'/lang/glossonym/_all', lAllGlossonyms)
+                
         
 def CommitTagging(dictObjects):
     """
